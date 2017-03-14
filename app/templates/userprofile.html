@@ -5,12 +5,12 @@
 
 <div id ="profile"> <h2> Profile </h2> </div>
 <div id = user >
-        <div id = "image"> <img src="{{url_for('static', filename = 'uploads/'+ user.userid + '.jpg' )}}"></img></div>
+        <div id = "image"> <img src="{{url_for('static', filename = 'uploads/'+ user.userid|string + '.jpg' )}}"></img></div>
             
         <div id = "BIO"> 
             <div id= "name"> <h1>{{ user.first_name }} {{ user.last_name }} </h1>   </div>
             <div id="date"> Created on : {{ user.date }}  </div>
-            <div id="info">  Username:{{ user.username }} </br>ID Number: {{ user.get_id() }}  </br>Age: {{ user.age }} </br>Gender: {{ user.gender }} </div>
+            <div id="info">  Username:{{ user.username }} </br>ID Number: {{ user.userid }}  </br>Age: {{ user.age }} </br>Gender: {{ user.gender }} </div>
             <div id="about-me">  {{ user.bio }} </div>
         </div>
 </div>

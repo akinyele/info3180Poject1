@@ -5,6 +5,7 @@ Werkzeug Documentation:  http://werkzeug.pocoo.org/documentation/
 This file creates your application.
 """
 import os
+import itertools
 from app import app, db, login_manager
 from app.models import UserProfile 
 
@@ -15,30 +16,7 @@ from time import gmtime, strftime
 from werkzeug.utils import secure_filename
 
 ID = 62007000
-
-
-
-
-###
-# Excercise 2 File listing Method
-###
-def fileList():
-    
-    uploadedFiles = []
-    filenames = []
-    rootdir = os.getcwd() 
-
-    print "log: " + rootdir
-    
-    for subdir, dirs, files in os.walk(app.config['UPLOAD_FOLDER']):
-        for file in files:
-            print os.path.join(subdir, file) 
-            filepath = os.path.join(subdir, file);
-            filename = os.path.basename(filepath)
-            uploadedFiles.append(filepath)
-            filenames.append(filename)
-            
-    return filenames
+newid = itertools.count().next
     
     
     
@@ -46,16 +24,16 @@ def isJpeg(file):
 
     return "jpg"== os.path.splitext(file)            
          
-         
-            
-@app.route('/filelisting')
-def files():
-    
-    uploads = fileList()
-    
-    return render_template('files.html', files=uploads )
- 
 
+
+def zUniqueID():
+    global counter
+    counter += 1
+    
+    ID += counter
+    
+    return counter         
+            
 
 ###
 # Routing for your application.
@@ -126,6 +104,8 @@ def profile():
     
     
     file_folder = app.config['UPLOAD_FOLDER']
+    count = db.session.query(UserProfile).count()
+    
     
     form = uploadForm();
     
@@ -144,9 +124,9 @@ def profile():
         
         date = timeinfo()
         
-        userID = ID + int(user.get_id())
+        userID = ID + count + 1
         
-        username = fname + userID
+        username = fname + str(userID)
         
         
         user = UserProfile(first_name=fname, last_name = lname, age = age, bio= bio, gender=gender, date=date, userid = userID , username = username )
@@ -172,11 +152,14 @@ def profile():
         
         date = timeinfo()
         
-        userID = ID + int(user.get_id())
+        userID = ID + count + 1
+         
         
-        username = fname + userID
+        username = fname + str(userID)
+       
         
         user = UserProfile(first_name=fname, last_name = lname, age = age, bio= bio, gender=gender, date=date, userid = userID , username = username )
+        
         db.session.add(user)
         db.session.commit()
         
