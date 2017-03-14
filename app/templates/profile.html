@@ -1,0 +1,58 @@
+{% extends 'base.html' %}
+
+{% block main %}
+<h1 class="page-header">Upload Profile</h1>
+
+{% with messages = get_flashed_messages() %}
+  {% if messages %}
+    <div class="alert alert-success">
+      <ul class="flashes">
+      {% for message in messages %}
+        <li>{{ message }}</li>
+      {% endfor %}
+      </ul>
+    </div>
+  {% endif %}
+{% endwith %}
+
+<form class="" action="{{ url_for('profile') }}" method="POST" enctype="multipart/form-data">
+ 
+ {{ form.csrf_token }}     
+  <div class="form-group">
+     {{ form.firstname.label }}
+     {{ form.firstname(class='form-control', placeholder="Enter your firstname") }}
+  </div>
+  
+  <div class="form-group">
+     {{ form.lastname.label }}
+     {{ form.lastname(class='form-control', placeholder="Enter your lastname") }}
+  </div>
+  
+  <div class="form-group">
+    {{ form.age.label}}
+    {{ form.age(class='form-control', placeholder= "Enter your age") }}
+  </div>
+  
+  <div class="form-group">
+    {{ form.bio.label}}
+    {{ form.bio(class='form-control', placeholder= "Enter a short biography") }}
+  </div>
+  
+  <div class="form-group">
+    {{ form.gender.label}}
+    {{ form.gender(class= '',placeholder="Male or female?") }}
+    
+  </div>
+  
+  <div class="form-group">
+    {{ form.upload.label}}
+    {{ form.upload(class='form-control', placeholder= "ESelect a profile image") }}
+  </div>
+  
+  
+  
+  
+  
+  <button type="submit" name="submit" class="btn btn-primary">Upload</button>
+</form>
+{% endblock %}
